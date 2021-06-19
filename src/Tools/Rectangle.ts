@@ -4,9 +4,12 @@ export default class Rectangle extends Tool {
     mouseDown: boolean
     startX: any
     startY: any
+    width: any
+    height: any
     saved: any
-    constructor(canvas: any){
-        super(canvas)
+    
+    constructor(canvas: any, socket: any, id: any){
+        super(canvas, socket, id)
         this.listen()
         this.mouseDown = false
         this.startX = null
@@ -22,6 +25,18 @@ export default class Rectangle extends Tool {
 
     mouseUpHandler(event: any) {
         this.mouseDown = false
+        this.socket.send(JSON.stringify({
+            method: 'draw',
+            id: this.id,
+            figure: {
+                type: 'rect',
+                x: this.startX,
+                y: this.startY,
+                width: this.width,
+                height: this.height,
+                color: this.context.fillStyle
+            }
+        }))
     }
 
     mouseDownHandler(event: any) {
@@ -34,12 +49,12 @@ export default class Rectangle extends Tool {
 
     mouseMoveHandler(event: any) {
         if(this.mouseDown){
-            let currentX, currentY, width, height
+            let currentX, currentY
             currentX = event.pageX - event.target.offsetLeft
             currentY = event.pageY - event.target.offsetTop
-            width = currentX - this.startX
-            height = currentY - this.startY
-            this.draw(this.startX, this.startY, width, height)
+            this.width = currentX - this.startX
+            this.height = currentY - this.startY
+            this.draw(this.startX, this.startY, this.width, this.height)
         }
     }
 
@@ -54,5 +69,13 @@ export default class Rectangle extends Tool {
             this.context.fill()
             this.context.stroke()
         }
+    }
+
+    static staticDraw(context: any, x: any, y: any, width: any, height: any, color: any) {
+        context.fillStyle = color
+        context.beginPath()
+        context.rect(x, y, width, height)
+        context.fill()
+        context.stroke()
     }
 }

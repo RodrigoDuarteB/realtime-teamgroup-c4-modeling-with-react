@@ -2,8 +2,8 @@ import Tool from "./Tool";
 
 export default class Brush extends Tool {
     mouseDown: boolean
-    constructor(canvas: any){
-        super(canvas)
+    constructor(canvas: any, socket: any, id: any){
+        super(canvas, socket, id)
         this.listen()
         this.mouseDown = false
     }
@@ -16,6 +16,13 @@ export default class Brush extends Tool {
 
     mouseUpHandler(event: any) {
         this.mouseDown = false
+        this.socket.send(JSON.stringify({
+            method: 'draw',
+            id: this.id,
+            figure: {
+                type: 'finish'
+            }
+        }))
     }
 
     mouseDownHandler(event: any) {
@@ -26,12 +33,21 @@ export default class Brush extends Tool {
 
     mouseMoveHandler(event: any) {
         if(this.mouseDown){
-            this.draw(event.pageX - event.target.offsetLeft, event.pageY - event.target.offsetTop)
+            //this.draw(event.pageX - event.target.offsetLeft, event.pageY - event.target.offsetTop)
+            this.socket.send(JSON.stringify({
+                method: 'draw',
+                id: this.id,
+                figure: {
+                    type: 'brush',
+                    x: event.pageX - event.target.offsetLeft,
+                    y: event.pageY - event.target.offsetTop
+                }
+            }))
         }
     }
 
-    draw(x: any, y: any) {
-        this.context.lineTo(x, y)
-        this.context.stroke()
+    static draw(context: any, x: any, y: any) {
+        context.lineTo(x, y)
+        context.stroke()
     }
 }
