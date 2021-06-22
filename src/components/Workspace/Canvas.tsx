@@ -1,11 +1,12 @@
 import axios from 'axios'
 import { observer } from 'mobx-react-lite'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import canvasState from '../../store/CanvasState'
 import toolState from '../../store/ToolState'
 import Brush from '../../Tools/Brush'
 import Eraser from '../../Tools/Eraser'
+import { Figure } from '../../Tools/Figure'
 import Rectangle from '../../Tools/Rectangle'
 import Text from '../../Tools/Text'
 
@@ -13,9 +14,11 @@ const Canvas = observer(() => {
     const canvasRef = useRef<any>()
     const usernameRef = useRef<any>()
     const params: any = useParams()
+    const [figures, setFigures] = useState<Figure[]>([])
 
     useEffect(() => {
         canvasState.setCanvas(canvasRef.current)
+        canvasState.setFigures(figures)
         axios.get(`http://localhost:5000/image?id=${params.id}`)
         .then(response => {
             const context = canvasRef.current.getContext('2d')
@@ -66,6 +69,8 @@ const Canvas = observer(() => {
             case "rect":
                 Rectangle.staticDraw(context, figure.x, figure.y, 
                     figure.width, figure.height, figure.color)
+                figures.push({x: figure.x, y: figure.y, width: figure.width, 
+                    height: figure.height})
             break
             case "text":
                 Text.staticDraw(context, 

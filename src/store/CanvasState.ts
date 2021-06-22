@@ -1,4 +1,5 @@
 import { makeAutoObservable } from "mobx"
+import { Figure } from "../Tools/Figure"
 
 class CanvasState {
     canvas: any
@@ -8,6 +9,8 @@ class CanvasState {
 
     socket: any
     sessionId: any
+
+    figures: Figure[] | any
 
     constructor(){
         makeAutoObservable(this)
@@ -27,6 +30,10 @@ class CanvasState {
 
     setCanvas(canvas: any){
         this.canvas = canvas
+    }
+    
+    setFigures(figures: Figure[]){
+        this.figures = figures
     }
 
     pushToUndo(data: any){

@@ -2,6 +2,7 @@ import React from 'react'
 import CanvasState from '../../store/CanvasState'
 import ToolState from '../../store/ToolState'
 import Brush from '../../Tools/Brush'
+import Cursor from '../../Tools/Cursor'
 import Eraser from '../../Tools/Eraser'
 import Rectangle from '../../Tools/Rectangle'
 import Text from '../../Tools/Text'
@@ -33,6 +34,7 @@ const Toolbar = () => {
                 <button onClick={() => ToolState.setTool(new Eraser(CanvasState.canvas, CanvasState.socket, CanvasState.sessionId))}>Eraser</button>
                 <button>Line</button>
                 <button onClick={() => ToolState.setTool(new Text(CanvasState.canvas, CanvasState.socket, CanvasState.sessionId))}>Text</button>
+                <button onClick={() => ToolState.setTool(new Cursor(CanvasState.canvas, CanvasState.socket, CanvasState.sessionId, []))}>Cursor</button>
                 <input type="color" onChange={e => changeColor(e)}/>
             </div>
             <div className="space-x-2 mr-2">

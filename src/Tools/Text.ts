@@ -10,7 +10,7 @@ export default class Text extends Tool {
         this.canvas.onclick = this.onClick.bind(this)
     }
 
-    onClick(event: MouseEvent | any) {
+    onClick(event: any) {
         this.socket.send(JSON.stringify({
             method: 'draw',
             id: this.id,
@@ -26,6 +26,9 @@ export default class Text extends Tool {
     static staticDraw(context: CanvasRenderingContext2D, text: string, x: number, y: number, color: string) {
         context.font = "bold 24px verdana"
         context.textAlign = "start"
-        context.fillText(text, x, y)       
+        context.fillText(text, x, y)  
+        /* context.textBaseline = "top"   
+        var dims = context.measureText(text)
+        context.strokeRect(x-10, y-10, dims.width+20, 48)   */
     }
 }
