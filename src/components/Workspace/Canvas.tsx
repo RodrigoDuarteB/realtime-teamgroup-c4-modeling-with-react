@@ -5,7 +5,9 @@ import { useParams } from 'react-router-dom'
 import canvasState from '../../store/CanvasState'
 import toolState from '../../store/ToolState'
 import Brush from '../../Tools/Brush'
+import Eraser from '../../Tools/Eraser'
 import Rectangle from '../../Tools/Rectangle'
+import Text from '../../Tools/Text'
 
 const Canvas = observer(() => {
     const canvasRef = useRef<any>()
@@ -56,14 +58,23 @@ const Canvas = observer(() => {
 
     const drawHandler = (msg: any) => {
         const figure = msg.figure
-        const context = canvasRef.current.getContext('2d')
+        const context: CanvasRenderingContext2D = canvasRef.current.getContext('2d')
         switch(figure.type) {
             case "brush":
                 Brush.draw(context, figure.x, figure.y)
             break
             case "rect":
-                Rectangle.staticDraw(context, figure.x, figure.y, figure.width, 
-                    figure.height, figure.color)
+                Rectangle.staticDraw(context, figure.x, figure.y, 
+                    figure.width, figure.height, figure.color)
+            break
+            case "text":
+                Text.staticDraw(context, 
+                    "Hola", figure.x, figure.y, 
+                    figure.color)
+            break
+            case "eraser":
+                Eraser.staticDraw(context, 
+                figure.x, figure.y)
             break
             case "finish":
                 context.beginPath()

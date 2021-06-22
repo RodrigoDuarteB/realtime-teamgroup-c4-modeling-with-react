@@ -11,4 +11,27 @@ export default class Eraser extends Brush {
         this.context.lineTo(x, y)
         this.context.stroke()
     }
+
+    mouseMoveHandler(event: any) {
+        if(this.mouseDown){
+            //this.draw(event.pageX - event.target.offsetLeft, event.pageY - event.target.offsetTop)
+            this.socket.send(JSON.stringify({
+                method: 'draw',
+                id: this.id,
+                figure: {
+                    type: 'eraser',
+                    x: event.pageX - event.target.offsetLeft,
+                    y: event.pageY - event.target.offsetTop
+                }
+            }))
+        }
+    }
+
+    static staticDraw(context: CanvasRenderingContext2D, x: number, y: number){
+        context.fillStyle = "#000"
+        context.lineWidth = 30
+        context.lineTo(x, y)
+        context.stroke()
+    }
+
 }

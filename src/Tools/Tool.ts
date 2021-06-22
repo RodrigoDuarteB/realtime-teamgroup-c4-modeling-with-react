@@ -1,8 +1,9 @@
 export default class Tool {
-    canvas 
-    context
-    socket
-    id
+    canvas: HTMLCanvasElement 
+    context: CanvasRenderingContext2D
+    socket: WebSocket
+    id: string
+    
     constructor(canvas: any, socket: any, id: any){
         this.canvas = canvas
         this.socket = socket
@@ -11,15 +12,15 @@ export default class Tool {
         this.destroyEvents()
     }
 
-    set fillColor(color: any){
+    set fillColor(color: string){
         this.context.fillStyle = color
     }
 
-    set strokeColor(color: any){
+    set strokeColor(color: string){
         this.context.strokeStyle = color
     }
 
-    set lineWidth(width: any){
+    set lineWidth(width: number){
         this.context.lineWidth = width
     }
 
@@ -27,5 +28,6 @@ export default class Tool {
         this.canvas.onmousemove = null
         this.canvas.onmousedown = null
         this.canvas.onmouseup = null
+        this.canvas.onclick = null
     }
 }
