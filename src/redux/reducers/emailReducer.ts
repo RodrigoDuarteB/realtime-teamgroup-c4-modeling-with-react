@@ -1,9 +1,10 @@
+import { Action } from './../Action'
 const defaultValue = ''
 
-const reducer = (state = defaultValue, { type, payload }: any) => {
+const reducer = (state = defaultValue, { type, payload }: Action) => {
     switch (type){
-        case 'setEmail':
-            
+        case 'setFormfieldValue':
+            return { payload }  
         default:
             return state
     }
