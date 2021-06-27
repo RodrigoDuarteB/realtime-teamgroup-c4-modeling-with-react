@@ -1,26 +1,30 @@
 import React from 'react';
 import Header from './components/Header/Header';
-import Settingbar from './components/Settingbar/Settingbar';
-import Toolbar from './components/Toolbar/Toolbar';
-import Canvas from './components/Workspace/Canvas';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
+import Workspace from './components/Workspace/Workspace';
+import Home from './components/Home/Home';
+import Login from './components/Auth/Login';
 
 
 function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <div>
+        <Header/>
         <Switch>
-          <Route path='/:id'>
-            <Header/>
-            <Toolbar/>
-            <Settingbar/>
-            <Canvas/>
-          </Route>
-          <Redirect to={`f${(+new Date).toString(16)}`}/>
+          //inicio
+          <Route exact path='/' component={Home}/>
+
+          //login
+          <Route path='/login' component={Login}/>
+
+          //reuniones
+          <Route path='/meets/:id' component={Workspace}/>
+
+          <Redirect to={`/meets/f${(+new Date).toString(16)}`}/>
         </Switch>
       </div>
-    </BrowserRouter>
+    </Router>
   );
 }
 

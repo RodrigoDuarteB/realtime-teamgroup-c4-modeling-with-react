@@ -1,11 +1,15 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Header = () => {
     return (
-        <div className="w-full h-14 bg-indigo-400 flex justify-between items-center px-4">
-            <h1>C4Meet</h1>
-            <p>User</p>
-        </div>
+        <nav className="w-full h-14 bg-primary-dark flex justify-between items-center px-4 rounded-b-lg">
+            <Link to="/">C4Meet</Link>
+            <div className="space-x-2">
+                <Link to="/meets">Reuniones</Link>
+                <Link to="/login">Usuario</Link>
+            </div>
+        </nav>
     )
 }
 

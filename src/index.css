@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn {
+    @apply py-2 px-4 rounded-md;
+}
+
+.input {
+    @apply appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none;
+}
+
+.canvas {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

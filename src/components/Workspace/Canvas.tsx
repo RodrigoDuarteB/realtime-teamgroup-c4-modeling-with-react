@@ -69,7 +69,7 @@ const Canvas = observer(() => {
             case "rect":
                 Rectangle.staticDraw(context, figure.x, figure.y, 
                     figure.width, figure.height, figure.color)
-                figures.push({x: figure.x, y: figure.y, width: figure.width, 
+                figures.push({id: '', x: figure.x, y: figure.y, width: figure.width, 
                     height: figure.height})
             break
             case "text":
@@ -104,7 +104,7 @@ const Canvas = observer(() => {
         <div>
             <input type="text" ref={usernameRef}/>
             <button onClick={connectHandler} className="ml-2">Set user</button>
-            <canvas className="border-t-2" width={2000} height={1000} ref={canvasRef} onMouseDown={() => mouseDownHandler()}/>
+            <canvas className="border bg-secondary" height={830} width={1899} ref={canvasRef} onMouseDown={() => mouseDownHandler()}/>
         </div>
     )
 })

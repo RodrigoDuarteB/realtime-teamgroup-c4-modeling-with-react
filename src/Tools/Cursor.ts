@@ -46,10 +46,15 @@ export default class Cursor extends Tool {
         if(this.selected != null){
             this.selected.x = event.clientX - this.startX
             this.selected.y = event.clientY - this.startY
+            this.figures.filter(figure => {
+                if(this.selected!.id == figure.id){
+                    figure.x = this.selected!.x
+                    figure.y = this.selected!.y
+                    figure.width = this.selected!.width
+                    figure.height = this.selected!.height
+                }
+            })
         }
     }
 
-    static move(){
-
-    }
 }
