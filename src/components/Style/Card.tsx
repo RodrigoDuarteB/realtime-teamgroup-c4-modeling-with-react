@@ -1,12 +1,11 @@
 import React from 'react'
+import Center from './Center'
 
 const Card = (props: any) => {
-    const { children } = props
+    const { classes, children } = props
     return (
-        <div className="flex justify-center">
-            <div className="mt-8 rounded-md h-96 w-96 border shadow-lg p-4">
-                { children }
-            </div>
+        <div className={`rounded-md border shadow-lg p-4 ${classes}`}>
+            { children }
         </div>
     )
 }

@@ -1,24 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import setEmail from './../../redux/actions/setEmail'
-import setFormfieldValue from './../../redux/actions/setFormfieldValue'
-
+import React, { useState } from 'react'
 
 const Formfield = (props: any) => {
     const [value, setValue] = useState<any>()
     const { id, label, type, classes } = props
-
-    const dispatch = useDispatch()
-
-    useEffect(() => {
-        switch(type) {
-            case 'as':
-                dispatch(setFormfieldValue(value))
-                break
-            default:
-                dispatch(setFormfieldValue(value))
-        }
-    }, [value])
 
     return (
         <div className={`grid grid-rows-2 mt-2 mb-4 ${ classes }`}>

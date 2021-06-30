@@ -1,29 +1,37 @@
-import React from 'react';
 import Header from './components/Header/Header';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Switch } from 'react-router-dom'
 import Workspace from './components/Workspace/Workspace';
 import Home from './components/Home/Home';
 import Login from './components/Auth/Login';
-
+import GuardRoute from './components/Auth/GuardRoute';
+import Meets from './components/Meets/Meets';
+import Root from './components/Auth/Root';
+import AuthProvider from './components/Application/AuthProvider';
+import Title from './components/Application/Title';
 
 function App() {
+
   return (
     <Router>
-      <div>
-        <Header/>
-        <Switch>
-          //inicio
-          <Route exact path='/' component={Home}/>
+      <Title />
+      <AuthProvider>
+        <Root>
+          <Header/>
+          <Switch>
+            {/* inicio */}
+            <GuardRoute exact path='/' component={Home} type="public"/>
 
-          //login
-          <Route path='/login' component={Login}/>
+            {/* login */}
+            <GuardRoute path='/login' component={Login} type="public-no-auth"/>
 
-          //reuniones
-          <Route path='/meets/:id' component={Workspace}/>
-
-          <Redirect to={`/meets/f${(+new Date).toString(16)}`}/>
-        </Switch>
-      </div>
+            {/* reuniones */}
+            {/* reuniones de un usuario */}
+            <GuardRoute path='/meets/me/:user_id' component={Meets} type="auth"/>
+            {/* reunión */}
+            <GuardRoute path='/meets/:id' component={Workspace} type="auth"/>
+          </Switch>
+        </Root>
+      </AuthProvider>
     </Router>
   );
 }

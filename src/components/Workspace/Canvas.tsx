@@ -2,6 +2,7 @@ import axios from 'axios'
 import { observer } from 'mobx-react-lite'
 import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { store } from '../../firebase.config'
 import canvasState from '../../store/CanvasState'
 import toolState from '../../store/ToolState'
 import Brush from '../../Tools/Brush'
@@ -9,12 +10,15 @@ import Eraser from '../../Tools/Eraser'
 import { Figure } from '../../Tools/Figure'
 import Rectangle from '../../Tools/Rectangle'
 import Text from '../../Tools/Text'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
 
 const Canvas = observer(() => {
     const canvasRef = useRef<any>()
-    const usernameRef = useRef<any>()
     const params: any = useParams()
     const [figures, setFigures] = useState<Figure[]>([])
+    
+    const diagramRef = store.collection('meets')
+    const [diagram] = useCollectionData(diagramRef.where('id', '==', params.id), {idField: 'id'})
 
     useEffect(() => {
         canvasState.setCanvas(canvasRef.current)
@@ -33,31 +37,26 @@ const Canvas = observer(() => {
     }, [])
 
     useEffect(() => {
-        if(canvasState.username){
-            const socket = new WebSocket('ws://localhost:5000/')
-            canvasState.setSocket(socket)
-            canvasState.setSessionId(params.id)
-            toolState.setTool(new Brush(canvasRef.current, socket, params.id))
-            socket.onopen = () => {
-                socket.send(JSON.stringify({
-                    id: params.id,
-                    username: canvasState.username,
-                    method: "connection"
-                }))
-            }
-            socket.onmessage = (e) => {
-                let msg = JSON.parse(e.data)
-                switch (msg.method){
-                    case "connection":
-                        console.log(msg)
-                    break
-                    case "draw":
-                        drawHandler(msg)    
-                    break
-                }
+        const socket = new WebSocket('ws://localhost:5000/')
+        canvasState.setSocket(socket)
+        canvasState.setSessionId(params.id)
+        toolState.setTool(new Brush(canvasRef.current, socket, params.id))
+        socket.onopen = () => {
+            socket.send(JSON.stringify({
+                id: params.id,
+                username: canvasState.username,
+                method: "connection"
+            }))
+        }
+        socket.onmessage = (e) => {
+            let msg = JSON.parse(e.data)
+            switch (msg.method){
+                case "draw":
+                    drawHandler(msg)    
+                break
             }
         }
-    }, [canvasState.username])
+    }, [])
 
     const drawHandler = (msg: any) => {
         const figure = msg.figure
@@ -88,23 +87,24 @@ const Canvas = observer(() => {
     }
 
     const mouseDownHandler = () => {
+        console.log('empecé')
         canvasState.pushToUndo(canvasRef.current.toDataURL())
-        axios.post(`http://localhost:5000/image?id=${params.id}`, {img: 
-        canvasRef.current.toDataURL()})
-        .then(response => {
-            console.log(response.data)
-        }) 
+        /* axios.post(`http://localhost:5000/image?id=${params.id}`, {img: 
+        canvasRef.current.toDataURL()}) */
     }
 
-    const connectHandler = () => {
-        canvasState.setUsername(usernameRef.current.value)
+    const mouseUpHandler = () => {
+        console.log('termine de dibujar')
+    }
+
+    const mouseMoveHandler = () => {
+        //console.log('dibujando')
     }
 
     return (
         <div>
-            <input type="text" ref={usernameRef}/>
-            <button onClick={connectHandler} className="ml-2">Set user</button>
-            <canvas className="border bg-secondary" height={830} width={1899} ref={canvasRef} onMouseDown={() => mouseDownHandler()}/>
+            <p>Titulo: { diagram ? diagram : '' }</p>   
+            <canvas className="border bg-secondary" height={830} width={1899} ref={canvasRef} onMouseDown={mouseDownHandler} onMouseUp={mouseUpHandler} onMouseMove={mouseMoveHandler}/>
         </div>
     )
 })
