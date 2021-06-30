@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { observer } from 'mobx-react-lite'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { Fragment, useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { store } from '../../firebase.config'
 import canvasState from '../../store/CanvasState'
@@ -14,25 +14,26 @@ import { useCollectionData } from 'react-firebase-hooks/firestore'
 
 const Canvas = observer(() => {
     const canvasRef = useRef<any>()
+    const workspaceRef = useRef<any>()
     const params: any = useParams()
     const [figures, setFigures] = useState<Figure[]>([])
+    const [width, setWidth] = useState()
+    const [height, setHeight] = useState()
+    const [last, setLast] = useState<HTMLImageElement>(new Image())
     
     const diagramRef = store.collection('meets')
     const [diagram] = useCollectionData(diagramRef.where('id', '==', params.id), {idField: 'id'})
 
     useEffect(() => {
+        setWidth(workspaceRef.current.offsetWidth)
+        setHeight(workspaceRef.current.offsetHeight)
         canvasState.setCanvas(canvasRef.current)
         canvasState.setFigures(figures)
         axios.get(`http://localhost:5000/image?id=${params.id}`)
         .then(response => {
-            const context = canvasRef.current.getContext('2d')
             const image = new Image()
             image.src = response.data
-            image.onload = () => {
-                context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
-                context.drawImage(image, 0, 0, canvasRef.current.width, canvasRef.current.height)
-                context.stroke()
-            }
+            setImage(image)
         })
     }, [])
 
@@ -56,6 +57,14 @@ const Canvas = observer(() => {
                 break
             }
         }
+    }, [])
+
+    useEffect(() => {
+        window.onresize = (() => {
+            setWidth(workspaceRef.current.offsetWidth)
+            setHeight(workspaceRef.current.offsetHeight)
+            setImage(last)
+        })
     }, [])
 
     const drawHandler = (msg: any) => {
@@ -95,17 +104,34 @@ const Canvas = observer(() => {
 
     const mouseUpHandler = () => {
         console.log('termine de dibujar')
+        setLast(canvasRef.current.toDataURL())
     }
 
     const mouseMoveHandler = () => {
         //console.log('dibujando')
     }
 
+    const setImage = (image: HTMLImageElement) => {
+        const context: CanvasRenderingContext2D = canvasRef.current.getContext('2d')
+            image.onload = () => {
+                context.clearRect(0, 0, 
+                    canvasRef.current.width, 
+                    canvasRef.current.height)
+                context.drawImage(
+                    image, 0, 0, 
+                    canvasRef.current.width, 
+                    canvasRef.current.height)
+                context.stroke()
+            }        
+    }
+
     return (
-        <div>
-            <p>Titulo: { diagram ? diagram : '' }</p>   
-            <canvas className="border bg-secondary" height={830} width={1899} ref={canvasRef} onMouseDown={mouseDownHandler} onMouseUp={mouseUpHandler} onMouseMove={mouseMoveHandler}/>
-        </div>
+        <Fragment>
+            <div className="h-screen w-full" ref={workspaceRef}>
+                <p>Titulo: { diagram ? diagram : '' }</p>   
+                <canvas className="border bg-secondary" height={height} width={width} ref={canvasRef} onMouseDown={mouseDownHandler} onMouseUp={mouseUpHandler} onMouseMove={mouseMoveHandler}/>
+            </div>
+        </Fragment>
     )
 })
 

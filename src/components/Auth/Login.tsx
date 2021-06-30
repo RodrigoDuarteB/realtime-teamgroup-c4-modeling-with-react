@@ -5,6 +5,7 @@ import Card from '../Style/Card'
 import firebase from 'firebase/app'
 import Title from '../Application/Title'
 import Center from '../Style/Center'
+import { useQuery } from '../../Tools/OwnHooks/UseQuery'
 
 const Login = () => {
     const [email, setEmail] = useState('')
@@ -13,6 +14,12 @@ const Login = () => {
     const [errorPasswordMessage, setErrorPasswordMessage] = useState<any>(null)
     const [errorRegisteredMessage, setErrorRegisteredMessage] = useState<any>(null)
     const history = useHistory()
+    const query = useQuery()
+
+    const redirect = () => {
+        const qs = query.get('redirect_to') || '/'
+        history.push(qs)
+    }
 
     const register = (e: any) => {
         e.preventDefault()
@@ -26,7 +33,7 @@ const Login = () => {
             })
             .then(r => {})
             .catch(e => console.log(e))
-            history.push('/')
+            redirect()
         })
         .catch(reason => {
             if(reason.code == 'auth/invalid-email'){
@@ -51,7 +58,7 @@ const Login = () => {
             })
             .then(r => console.log(r))
             .catch(e => console.log(e))
-            history.push('/')
+            redirect()
         })
         .catch(e => {
             if(e.code == 'auth/wrong-password'){
@@ -73,7 +80,7 @@ const Login = () => {
             })
             .then(r => console.log('log registered'))
             .catch(e => console.log(e))
-            history.push('/')
+            redirect()
         })
     }
 
@@ -143,3 +150,4 @@ const Login = () => {
 }
 
 export default Login
+

@@ -9,7 +9,6 @@ import { Link } from 'react-router-dom'
 
 const Home = () => {
     const [user] = useAuthState(auth)
-
     return (
         <Fragment>
             <Title title="Home"/>
@@ -23,8 +22,8 @@ const Home = () => {
             <Center classes="my-3">
                 <Card classes="w-auto h-auto">
                     <div className="flex relative gradient-images">
-                        <img src="files/images/contextC4.png" alt="Image not Found" className="object-cover opacity-50" width="800" height="800"/>
-                        <img src="files/images/development-group.jpg" alt="Image not Found" className="object-cover opacity-50" width="800" height="800"/>
+                        <img src="files/images/contextC4.png" alt="Image not Found" className="object-cover opacity-50" width="700" height="700"/>
+                        <img src="files/images/development-group.jpg" alt="Image not Found" className="object-cover opacity-50" width="700" height="700"/>
                         <div className="center-image-text">
                             <p className="text-4xl text-center font-semibold">Modela diagramas C4 en tiempo real con tu equipo de trabajo!</p>
                             <Center classes="mt-6">
