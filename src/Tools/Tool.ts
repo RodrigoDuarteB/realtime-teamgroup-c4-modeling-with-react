@@ -4,7 +4,7 @@ export default class Tool {
     socket: WebSocket
     id: string
     
-    constructor(canvas: any, socket: any, id: any){
+    constructor(canvas: any, socket?: any, id?: any){
         this.canvas = canvas
         this.socket = socket
         this.id = id 
@@ -24,10 +24,17 @@ export default class Tool {
         this.context.lineWidth = width
     }
 
+    resetProps(){
+        this.context.lineWidth = 1
+        this.context.strokeStyle = "#000"
+        this.context.setLineDash([])
+    }
+
     destroyEvents(){
         this.canvas.onmousemove = null
         this.canvas.onmousedown = null
         this.canvas.onmouseup = null
         this.canvas.onclick = null
+        this.resetProps()
     }
 }

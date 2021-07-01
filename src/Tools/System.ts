@@ -1,6 +1,7 @@
+import { EventHandler } from "./EventHandler";
 import Tool from "./Tool";
 
-export default class Rectangle extends Tool {
+export default class System extends Tool implements EventHandler {
     mouseDown: boolean
     startX: any
     startY: any
@@ -8,13 +9,16 @@ export default class Rectangle extends Tool {
     height: any
     saved: any
     
-    constructor(canvas: any, socket: any, id: any){
+    constructor(canvas: any, socket?: any, id?: any){
         super(canvas, socket, id)
         this.listen()
         this.mouseDown = false
         this.startX = null
         this.startY = null
         this.saved = null
+    }
+    onClickHandler(e: any): void {
+        throw new Error("Method not implemented.");
     }
 
     listen() {
@@ -25,7 +29,7 @@ export default class Rectangle extends Tool {
 
     mouseUpHandler(event: any) {
         this.mouseDown = false
-        this.socket.send(JSON.stringify({
+        /* this.socket.send(JSON.stringify({
             method: 'draw',
             id: this.id,
             figure: {
@@ -36,7 +40,7 @@ export default class Rectangle extends Tool {
                 height: this.height,
                 color: this.context.fillStyle
             }
-        }))
+        })) */
     }
 
     mouseDownHandler(event: any) {
@@ -62,8 +66,10 @@ export default class Rectangle extends Tool {
         const image = new Image()
         image.src = this.saved
         image.onload = () => {
-            this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
-            this.context.drawImage(image, 0, 0, this.canvas.width, this.canvas.height)
+            this.context.clearRect(0, 0, this.canvas.width, 
+                this.canvas.height)
+            this.context.drawImage(image, 0, 0, 
+                this.canvas.width, this.canvas.height)
             this.context.beginPath()
             this.context.rect(x, y, width, height)
             this.context.fill()
@@ -71,7 +77,7 @@ export default class Rectangle extends Tool {
         }
     }
 
-    static staticDraw(context: any, x: any, y: any, width: any, height: any, color: any) {
+    static staticDraw(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, color: string) {
         context.fillStyle = color
         context.beginPath()
         context.rect(x, y, width, height)

@@ -2,10 +2,9 @@ import { makeAutoObservable } from "mobx"
 import Tool from "../Tools/Tool"
 
 class ToolState {
-    tool: Tool
-    constructor(tool?: any){
+    tool!: Tool
+    constructor(){
         makeAutoObservable(this)
-        this.tool = tool
     }
 
     setTool(tool: Tool){

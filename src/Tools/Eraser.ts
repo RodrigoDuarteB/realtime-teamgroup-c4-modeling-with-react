@@ -1,18 +1,18 @@
 import Brush from "./Brush";
 
 export default class Eraser extends Brush {
-    constructor(canvas: any, socket: any, id: any){
+    constructor(canvas: any, socket?: any, id?: any){
         super(canvas, socket, id)
     }
 
-    draw(x: any, y: any){
-        this.context.strokeStyle = "white"
+    draw(x: number, y: number){
+        this.context.strokeStyle = "#f5f5f5"
         this.context.lineWidth = 30
         this.context.lineTo(x, y)
         this.context.stroke()
     }
 
-    mouseMoveHandler(event: any) {
+    /* mouseMoveHandler(event: any) {
         if(this.mouseDown){
             //this.draw(event.pageX - event.target.offsetLeft, event.pageY - event.target.offsetTop)
             this.socket.send(JSON.stringify({
@@ -25,7 +25,7 @@ export default class Eraser extends Brush {
                 }
             }))
         }
-    }
+    } */
 
     static staticDraw(context: CanvasRenderingContext2D, x: number, y: number){
         context.fillStyle = "#000"

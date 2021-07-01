@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom'
 
 const Home = () => {
     const [user] = useAuthState(auth)
+
     return (
         <Fragment>
             <Title title="Home"/>
@@ -25,7 +26,7 @@ const Home = () => {
                         <img src="files/images/contextC4.png" alt="Image not Found" className="object-cover opacity-50" width="700" height="700"/>
                         <img src="files/images/development-group.jpg" alt="Image not Found" className="object-cover opacity-50" width="700" height="700"/>
                         <div className="center-image-text">
-                            <p className="text-4xl text-center font-semibold">Modela diagramas C4 en tiempo real con tu equipo de trabajo!</p>
+                            <p className="text-4xl text-center font-semibold opacity-100">Modela diagramas C4 en tiempo real con tu equipo de trabajo!</p>
                             <Center classes="mt-6">
                                 <Link to={user ? `/meets/me/${user.uid}` : '/login'} className="btn bg-primary-dark text-secondary text-2xl hover:bg-secondary hover:text-gray-500 font-semibold">Empieza Ahora</Link>
                             </Center>

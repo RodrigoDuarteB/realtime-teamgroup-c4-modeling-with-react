@@ -2,7 +2,7 @@ import { makeAutoObservable } from "mobx"
 import { Figure } from "../Tools/Figure"
 
 class CanvasState {
-    canvas: any
+    canvas!: HTMLCanvasElement
     undoList: any = []
     redoList: any = []
     username: any
@@ -14,6 +14,11 @@ class CanvasState {
 
     constructor(){
         makeAutoObservable(this)
+    }
+
+    setTabIndex(){
+        this.canvas!.tabIndex = 1000
+        this.canvas!.style.outline = "none"
     }
 
     setUsername(username: any){
@@ -28,7 +33,7 @@ class CanvasState {
         this.socket = socket
     }
 
-    setCanvas(canvas: any){
+    setCanvas(canvas: HTMLCanvasElement){
         this.canvas = canvas
     }
     
@@ -45,42 +50,44 @@ class CanvasState {
     }
 
     undo(){
-        let context: CanvasRenderingContext2D = this.canvas.getContext('2d')
         if(this.undoList.length > 0){
             let dataUrl = this.undoList.pop()
             this.redoList.push(this.canvas.toDataURL())
             let image = new Image()
             image.src = dataUrl
-            image.onload = () => {
-                context.clearRect(0, 0, this.canvas.width, 
-                    this.canvas.height) 
-                context.drawImage(image, 0, 0, 
-                    this.canvas.width, this.canvas.height)
-            }
+            this.setImage(image)
         }else{
-            context.clearRect(0, 0, this.canvas.width, 
-                this.canvas.height)
+            this.clear()
         }
     }
 
     redo(){
-        let context: CanvasRenderingContext2D = this.canvas.getContext('2d')
         if(this.redoList.length > 0){
             let dataUrl = this.redoList.pop()
             this.undoList.push(this.canvas.toDataURL())
             let image = new Image()
             image.src = dataUrl
-            image.onload = () => {
-                context.clearRect(0, 0, this.canvas.width, 
-                    this.canvas.height) 
-                context.drawImage(image, 0, 0, 
-                    this.canvas.width, this.canvas.height)
-            }
+            this.setImage(image)
         }
     }
 
     clear() {
-        this.canvas.getContext('2d').clearRect(0, 0, this.canvas.width, this.canvas.height) 
+        this.canvas.getContext('2d')!.clearRect(0, 0, 
+            this.canvas!.width, this.canvas!.height) 
+    }
+    
+    setImage(image: HTMLImageElement){
+        const context: CanvasRenderingContext2D = this.canvas.getContext('2d')!
+        image.onload = () => {
+            context.clearRect(0, 0, 
+                this.canvas.width, 
+                this.canvas.height)
+            context.drawImage(
+                image, 0, 0, 
+                this.canvas.width, 
+                this.canvas.height)
+            context.stroke()
+        }        
     }
 }
 

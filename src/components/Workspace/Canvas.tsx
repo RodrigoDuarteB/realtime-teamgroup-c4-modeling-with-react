@@ -8,7 +8,7 @@ import toolState from '../../store/ToolState'
 import Brush from '../../Tools/Brush'
 import Eraser from '../../Tools/Eraser'
 import { Figure } from '../../Tools/Figure'
-import Rectangle from '../../Tools/Rectangle'
+import System from '../../Tools/System'
 import Text from '../../Tools/Text'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 
@@ -16,6 +16,7 @@ const Canvas = observer(() => {
     const canvasRef = useRef<any>()
     const workspaceRef = useRef<any>()
     const params: any = useParams()
+
     const [figures, setFigures] = useState<Figure[]>([])
     const [width, setWidth] = useState()
     const [height, setHeight] = useState()
@@ -28,6 +29,7 @@ const Canvas = observer(() => {
         setWidth(workspaceRef.current.offsetWidth)
         setHeight(workspaceRef.current.offsetHeight)
         canvasState.setCanvas(canvasRef.current)
+        canvasState.setTabIndex()
         canvasState.setFigures(figures)
         axios.get(`http://localhost:5000/image?id=${params.id}`)
         .then(response => {
@@ -72,10 +74,10 @@ const Canvas = observer(() => {
         const context: CanvasRenderingContext2D = canvasRef.current.getContext('2d')
         switch(figure.type) {
             case "brush":
-                Brush.draw(context, figure.x, figure.y)
+                Brush.staticDraw(context, figure.x, figure.y)
             break
             case "rect":
-                Rectangle.staticDraw(context, figure.x, figure.y, 
+                System.staticDraw(context, figure.x, figure.y, 
                     figure.width, figure.height, figure.color)
                 figures.push({id: '', x: figure.x, y: figure.y, width: figure.width, 
                     height: figure.height})
@@ -104,7 +106,9 @@ const Canvas = observer(() => {
 
     const mouseUpHandler = () => {
         console.log('termine de dibujar')
-        setLast(canvasRef.current.toDataURL())
+        const image = new Image()
+        image.src = canvasRef.current.toDataURL()
+        setLast(image)
     }
 
     const mouseMoveHandler = () => {
@@ -113,23 +117,26 @@ const Canvas = observer(() => {
 
     const setImage = (image: HTMLImageElement) => {
         const context: CanvasRenderingContext2D = canvasRef.current.getContext('2d')
-            image.onload = () => {
-                context.clearRect(0, 0, 
-                    canvasRef.current.width, 
-                    canvasRef.current.height)
-                context.drawImage(
-                    image, 0, 0, 
-                    canvasRef.current.width, 
-                    canvasRef.current.height)
-                context.stroke()
-            }        
+        image.onload = () => {
+            context.clearRect(0, 0, 
+                canvasRef.current.width, 
+                canvasRef.current.height)
+            context.drawImage(
+                image, 0, 0, 
+                canvasRef.current.width, 
+                canvasRef.current.height)
+            context.stroke()
+        }        
     }
 
     return (
         <Fragment>
             <div className="h-screen w-full" ref={workspaceRef}>
                 <p>Titulo: { diagram ? diagram : '' }</p>   
-                <canvas className="border bg-secondary" height={height} width={width} ref={canvasRef} onMouseDown={mouseDownHandler} onMouseUp={mouseUpHandler} onMouseMove={mouseMoveHandler}/>
+                <canvas className="border bg-secondary" height={height} width={width} ref={canvasRef}   onMouseDown={mouseDownHandler} 
+                onMouseUp={mouseUpHandler} 
+                onMouseMove={mouseMoveHandler}
+                />
             </div>
         </Fragment>
     )

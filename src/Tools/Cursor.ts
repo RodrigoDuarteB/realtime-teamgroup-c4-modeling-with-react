@@ -7,7 +7,7 @@ export default class Cursor extends Tool {
     startX: number
     startY: number
 
-    constructor(canvas: any, socket: any, id: any, figures: Figure[]){
+    constructor(canvas: any, figures: Figure[], socket?: any, id?: any){
         super(canvas, socket, id)
         this.listen()
         this.figures = figures
