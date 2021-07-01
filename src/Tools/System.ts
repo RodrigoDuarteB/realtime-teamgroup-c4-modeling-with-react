@@ -9,8 +9,8 @@ export default class System extends Tool implements EventHandler {
     height: any
     saved: any
     
-    constructor(canvas: any, socket?: any, id?: any){
-        super(canvas, socket, id)
+    constructor(canvas: any, id?: any){
+        super(canvas, id)
         this.listen()
         this.mouseDown = false
         this.startX = null

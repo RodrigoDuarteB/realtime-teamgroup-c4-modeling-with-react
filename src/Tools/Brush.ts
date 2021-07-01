@@ -3,8 +3,8 @@ import Tool from "./Tool";
 export default class Brush extends Tool {
     mouseDown: boolean
 
-    constructor(canvas: any, socket?: any, id?: any){
-        super(canvas, socket, id)
+    constructor(canvas: any, id?: any){
+        super(canvas, id)
         this.listen()
         this.mouseDown = false
     }

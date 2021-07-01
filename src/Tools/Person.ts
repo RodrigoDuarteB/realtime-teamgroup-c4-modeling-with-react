@@ -31,8 +31,6 @@ export default class Person extends Tool implements EventHandler {
     }
 
     onClickHandler(e: any): void {
-        console.log(e.pageX - e.target.offsetLeft)
-        console.log(e.pageY - e.target.offsetTop)
     }
 
     mouseMoveHandler(e: any): void {

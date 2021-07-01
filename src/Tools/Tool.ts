@@ -1,12 +1,10 @@
 export default class Tool {
     canvas: HTMLCanvasElement 
     context: CanvasRenderingContext2D
-    socket: WebSocket
     id: string
     
-    constructor(canvas: any, socket?: any, id?: any){
+    constructor(canvas: any, id?: any){
         this.canvas = canvas
-        this.socket = socket
         this.id = id 
         this.context = canvas.getContext('2d')
         this.destroyEvents()

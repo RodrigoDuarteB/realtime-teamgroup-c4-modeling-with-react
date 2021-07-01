@@ -1,4 +1,5 @@
 import { makeAutoObservable } from "mobx"
+import { store } from "../firebase.config"
 import { Figure } from "../Tools/Figure"
 
 class CanvasState {
@@ -59,6 +60,7 @@ class CanvasState {
         }else{
             this.clear()
         }
+        this.sendToServer()
     }
 
     redo(){
@@ -68,12 +70,14 @@ class CanvasState {
             let image = new Image()
             image.src = dataUrl
             this.setImage(image)
+            this.sendToServer()
         }
     }
 
     clear() {
         this.canvas.getContext('2d')!.clearRect(0, 0, 
-            this.canvas!.width, this.canvas!.height) 
+            this.canvas!.width, this.canvas!.height)
+        this.sendToServer()
     }
     
     setImage(image: HTMLImageElement){
@@ -89,6 +93,15 @@ class CanvasState {
             context.stroke()
         }        
     }
+
+    sendToServer(){
+        store.collection('meets')
+        .doc(this.sessionId)
+        .update({image: this.canvas.toDataURL()})
+        .then(() => console.log('updated'))
+        .catch(e => console.log(e))
+    }
+
 }
 
 export default new CanvasState()             

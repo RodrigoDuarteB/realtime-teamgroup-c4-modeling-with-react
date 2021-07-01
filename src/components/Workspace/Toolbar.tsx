@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom'
-import { storage } from '../../firebase.config'
 import CanvasState from '../../store/CanvasState'
 import ToolState from '../../store/ToolState'
 import Cursor from '../../Tools/Cursor'
@@ -31,17 +30,6 @@ const Toolbar = () => {
     }
 
     const download = () => {
-        CanvasState.canvas.toBlob((blob: any) => {
-            const image = new File([blob], params.id, 
-                {type: 'image/jpg'})
-            storage.ref(`/files/images/${params.id}`)
-            .put(image)
-            .on('state_changed', snapshot => {
-                console.log('subiendo!');
-            }, e => console.log(e), () => {
-                console.log('subido!')
-            })
-        })
         const a = document.createElement('a')
         a.href = CanvasState.canvas.toDataURL()
         a.download = params.id + ".jpg"
@@ -52,7 +40,7 @@ const Toolbar = () => {
 
     const setFocused = (index: number) => {
         const newActive = active.map((item, i) => {
-            if(i == index){
+            if(i === index){
                 return true
             }
             return false

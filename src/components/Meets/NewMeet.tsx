@@ -29,7 +29,7 @@ const NewMeet = () => {
     return (
         <Fragment>
             <form onSubmit={e => generate(e)}>
-                <h2>Iniciar nuevo diagrama</h2>
+                <h2 className="text-center font-semibold text-lg">Iniciar nuevo diagrama</h2>
                 {
                     errorMessage ? (
                         <li className='text-sm text-red-500 my-2'>{ errorMessage }</li>
