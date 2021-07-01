@@ -3,6 +3,8 @@ import Tool from "../Tools/Tool"
 
 class ToolState {
     tool!: Tool
+    text: any
+    
     constructor(){
         makeAutoObservable(this)
     }
@@ -21,6 +23,10 @@ class ToolState {
 
     setLineWidth(width: number){
         this.tool.lineWidth = width
+    }
+
+    setText(text: string){
+        this.text = text
     }
 
 }

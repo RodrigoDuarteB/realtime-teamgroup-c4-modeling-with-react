@@ -1,3 +1,4 @@
+import ToolState from "../store/ToolState";
 import Tool from "./Tool";
 
 export default class Text extends Tool {
@@ -6,7 +7,7 @@ export default class Text extends Tool {
     constructor(canvas: any, id?: any){
         super(canvas, id)
         this.listen()
-        this.text = 'prueba'
+        this.text = ToolState.text
     }
 
     listen() {

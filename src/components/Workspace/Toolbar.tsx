@@ -29,6 +29,10 @@ const Toolbar = () => {
         ToolState.setFillColor(e.target.value)
     }
 
+    const setText = (e: any) => {
+        ToolState.setText(e.target.value)
+    }
+
     const download = () => {
         const a = document.createElement('a')
         a.href = CanvasState.canvas.toDataURL()
@@ -121,6 +125,8 @@ const Toolbar = () => {
                 </button>
 
                 <input type="color" onChange={e => changeColor(e)}/>
+
+                <input type="text" onChange={e => setText(e)}/>
             </div>
 
             <div className="space-x-2">

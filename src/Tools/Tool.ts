@@ -2,6 +2,7 @@ export default class Tool {
     canvas: HTMLCanvasElement 
     context: CanvasRenderingContext2D
     id: string
+    text: any
     
     constructor(canvas: any, id?: any){
         this.canvas = canvas
