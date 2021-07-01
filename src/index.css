@@ -3,34 +3,30 @@
 @tailwind utilities;
 
 .btn {
-    @apply py-2 px-4 rounded-md;
-}
-
-.tool {
-    @apply w-16 h-16 p-2;
+  @apply py-2 px-4 rounded-md;
 }
 
 .input {
-    @apply appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none;
+  @apply appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none;
 }
 
 .header-text {
-    @apply text-secondary-light font-bold text-xl;
+  @apply text-secondary-light font-bold text-xl;
 }
 
 .center-image-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .gradient-images {
-    background: linear-gradient(90deg, #a094b7, #c2c2c2);
-    opacity: 0.6;
+  background: linear-gradient(90deg, #a094b7, #c2c2c2);
+  opacity: 0.6;
 }
 
 hr {
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }

@@ -8,6 +8,7 @@ import RelationshipLine from '../../Tools/RelationshipLine'
 import Person from '../../Tools/Person'
 import System from '../../Tools/System'
 import Text from '../../Tools/Text'
+import IconLabel from '../Style/IconText'
 
 //icons
 import { IoText as IconText } from 'react-icons/io5'
@@ -18,9 +19,11 @@ import { ImArrowUpRight2 as Arrow } from 'react-icons/im'
 import { RiArrowGoBackFill as Undo, RiArrowGoForwardFill as Redo } from 'react-icons/ri'
 import { IoIosSave as Save } from 'react-icons/io'
 import { BiRectangle as IconRectangle } from 'react-icons/bi'
+import { useState } from 'react'
 
 const Toolbar = () => {
     const params: any = useParams()
+    const [active, setActive] = useState([true, false, false, false, false, false])
 
     const changeColor = (e: any) => {
         ToolState.setStrokeColor(e.target.value)
@@ -47,44 +50,119 @@ const Toolbar = () => {
         document.body.removeChild(a)
     }
 
+    const setFocused = (index: number) => {
+        const newActive = active.map((item, i) => {
+            if(i == index){
+                return true
+            }
+            return false
+        })
+        setActive(newActive)
+    }
+
+    const setTool = (index: number) => {
+        switch(index){
+            case 0:
+                ToolState.setTool(new Person(CanvasState.canvas))
+                break
+            case 1:
+                ToolState.setTool(new System(CanvasState.canvas))
+                break
+            case 2:
+                ToolState.setTool(new RelationshipLine(CanvasState.canvas))
+                break
+            case 3:
+                ToolState.setTool(new Text(CanvasState.canvas))
+                break
+            case 4:
+                ToolState.setTool(new Cursor(CanvasState.canvas, []))
+                break
+            case 5:
+                ToolState.setTool(new Eraser(CanvasState.canvas))
+                break
+            default:
+                ToolState.setTool(new Person(CanvasState.canvas))
+        }
+        setFocused(index)
+    }
+
     return (
-        <div className="flex justify-between">
+        <div className="flex justify-between p-2 bg-gray-300 border-gray-700 border-b-2">
             <div className="space-x-2">
 
                 {/* Person */}
-                <button onClick={() => ToolState.setTool(new Person(CanvasState.canvas))} className="btn bg-primary hover:bg-primary-dark"><IconPerson/>
+                <button onClick={() => setTool(0)} className={`btn bg-primary hover:bg-primary-dark ${ active[0] ? 'bg-primary-dark' : ''}`}>
+                    <IconLabel text="Persona">
+                        <IconPerson size={40}/>
+                    </IconLabel>
                 </button>
 
                 {/* System */}
-                <button onClick={() => ToolState.setTool(new System(CanvasState.canvas))} className="btn bg-primary hover:bg-primary-dark"><IconRectangle/></button>
+                <button onClick={() => setTool(1)} className={`btn bg-primary hover:bg-primary-dark ${ active[1] ? 'bg-primary-dark' : ''}`}>
+                    <IconLabel text="Sistema">
+                        <IconRectangle size={40}/>
+                    </IconLabel>
+                </button>
 
                 {/* Relationship */}
-                <button onClick={() => ToolState.setTool(new RelationshipLine(CanvasState.canvas))} className="btn bg-primary hover:bg-primary-dark"><Arrow /></button>
+                <button onClick={() => setTool(2)} className={`btn bg-primary hover:bg-primary-dark ${ active[2] ? 'bg-primary-dark' : ''}`}>
+                    <IconLabel text="Relacion">
+                        <Arrow size={40}/>
+                    </IconLabel>
+                </button>
 
                 {/* Text */}
-                <button onClick={() => ToolState.setTool(new Text(CanvasState.canvas))} className="btn bg-primary hover:bg-primary-dark"><IconText/></button>
+                <button onClick={() => setTool(3)} className={`btn bg-primary hover:bg-primary-dark ${ active[3] ? 'bg-primary-dark' : ''}`}>
+                    <IconLabel text="Texto">
+                        <IconText size={40}/>
+                    </IconLabel>
+                </button>
 
                 {/* Cursor */}
-                <button onClick={() => ToolState.setTool(new Cursor(CanvasState.canvas, []))} className="btn bg-primary hover:bg-primary-dark"><IconCursor/></button>
+                <button onClick={() => setTool(4)} className={`btn bg-primary hover:bg-primary-dark ${ active[4] ? 'bg-primary-dark' : ''}`}>
+                    <IconLabel text="Cursor">
+                        <IconCursor size={40}/>
+                    </IconLabel>
+                </button>
 
                 {/* Eraser */}
-                <button onClick={() => ToolState.setTool(new Eraser(CanvasState.canvas))} className="btn bg-primary hover:bg-primary-dark"><IconEraser/></button>
+                <button onClick={() => setTool(5)} className={`btn bg-primary hover:bg-primary-dark ${ active[5] ? 'bg-primary-dark' : ''}`}>
+                    <IconLabel text="Borrador">
+                        <IconEraser size={40}/>
+                    </IconLabel>
+                </button>
 
                 <input type="color" onChange={e => changeColor(e)}/>
             </div>
 
             <div className="space-x-2">
                 {/* Clean */}
-                <button onClick={() => CanvasState.clear()} className="btn bg-primary hover:bg-primary-dark"><Clear/></button>
+                <button onClick={() => CanvasState.clear()} className="btn bg-primary hover:bg-primary-dark">
+                    <IconLabel text="Limpiar">
+                        <Clear size={40}/>
+                    </IconLabel>
+                </button>
 
                 {/* Undo */}
-                <button onClick={() => CanvasState.undo()} className="btn bg-primary hover:bg-primary-dark"><Undo/></button>
+                <button onClick={() => CanvasState.undo()} className="btn bg-primary hover:bg-primary-dark">
+                    <IconLabel text="Deshacer">
+                        <Undo size={40}/>
+                    </IconLabel>
+                </button>
 
                 {/* Redo */}
-                <button onClick={() => CanvasState.redo()} className="btn bg-primary hover:bg-primary-dark"><Redo/></button>
+                <button onClick={() => CanvasState.redo()} className="btn bg-primary hover:bg-primary-dark">
+                    <IconLabel text="Rehacer">
+                        <Redo size={40}/>
+                    </IconLabel>
+                </button>
 
                 {/* Save - Download */}
-                <button onClick={() => download()} className="btn bg-primary hover:bg-primary-dark"><Save/></button>
+                <button onClick={() => download()} className="btn bg-primary hover:bg-primary-dark">
+                    <IconLabel text="Guardar">
+                        <Save size={40}/>
+                    </IconLabel>
+                </button>
             </div>
         </div>
     )

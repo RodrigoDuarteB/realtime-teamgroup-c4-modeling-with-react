@@ -5,12 +5,9 @@ import { useParams } from 'react-router-dom'
 import { store } from '../../firebase.config'
 import canvasState from '../../store/CanvasState'
 import toolState from '../../store/ToolState'
-import Brush from '../../Tools/Brush'
-import Eraser from '../../Tools/Eraser'
 import { Figure } from '../../Tools/Figure'
-import System from '../../Tools/System'
-import Text from '../../Tools/Text'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
+import Person from '../../Tools/Person'
 
 const Canvas = observer(() => {
     const canvasRef = useRef<any>()
@@ -31,20 +28,20 @@ const Canvas = observer(() => {
         canvasState.setCanvas(canvasRef.current)
         canvasState.setTabIndex()
         canvasState.setFigures(figures)
-        axios.get(`http://localhost:5000/image?id=${params.id}`)
+        /* axios.get(`http://localhost:5000/image?id=${params.id}`)
         .then(response => {
             const image = new Image()
             image.src = response.data
             setImage(image)
-        })
+        }) */
     }, [])
 
     useEffect(() => {
-        const socket = new WebSocket('ws://localhost:5000/')
-        canvasState.setSocket(socket)
+        //const socket = new WebSocket('ws://localhost:5000/')
+        canvasState.setSocket(null)
         canvasState.setSessionId(params.id)
-        toolState.setTool(new Brush(canvasRef.current, socket, params.id))
-        socket.onopen = () => {
+        toolState.setTool(new Person(canvasRef.current))
+        /* socket.onopen = () => {
             socket.send(JSON.stringify({
                 id: params.id,
                 username: canvasState.username,
@@ -58,18 +55,19 @@ const Canvas = observer(() => {
                     drawHandler(msg)    
                 break
             }
-        }
+        } */
     }, [])
 
     useEffect(() => {
-        window.onresize = (() => {
+        /* window.onresize = (() => {
             setWidth(workspaceRef.current.offsetWidth)
             setHeight(workspaceRef.current.offsetHeight)
             setImage(last)
-        })
-    }, [])
+        }) */
+        console.log(diagram)
+    }, [diagram])
 
-    const drawHandler = (msg: any) => {
+    /* const drawHandler = (msg: any) => {
         const figure = msg.figure
         const context: CanvasRenderingContext2D = canvasRef.current.getContext('2d')
         switch(figure.type) {
@@ -95,7 +93,7 @@ const Canvas = observer(() => {
                 context.beginPath()
             break
         }
-    }
+    } */
 
     const mouseDownHandler = () => {
         console.log('empecé')
