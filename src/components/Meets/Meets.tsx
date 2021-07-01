@@ -1,5 +1,5 @@
-import React, { Fragment, useEffect, useState } from 'react'
-import { useHistory, useParams } from 'react-router-dom'
+import React, { Fragment, Suspense, useEffect, useState } from 'react'
+import { Link, useHistory, useParams } from 'react-router-dom'
 import { store } from '../../firebase.config'
 import Card from '../Style/Card'
 import Center from '../Style/Center'
@@ -8,14 +8,14 @@ import Title from '../Application/Title'
 import { auth } from '../../firebase.config'
 import NewMeet from './NewMeet'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
+import Loading from '../Style/Loading'
 
 const useOwn = () => {
-
     const [own, setOwn] = useState<any[]>([])
     const params: any = useParams()
 
     useEffect(() => {
-        const unsuscribe = store
+        /* store
         .collection('meets')
         .where('host_id', "==", params.user_id)
         .onSnapshot(snap => {
@@ -24,8 +24,13 @@ const useOwn = () => {
                 ...doc.data()
             }))
             setOwn(meets)
+        }) */
+        /* store.collection('meets').where('host_id', "==", params.user_id).get()
+        .then(res => {
+            setOwn(res.docs.map(item => ({id: item.id, ...item.data()})))
         })
-        return () => unsuscribe()
+        .catch(e => console.log(e)) */
+        
     }, [])
 
     return own
@@ -34,6 +39,7 @@ const useOwn = () => {
 const Meets = () => {
     const params: any = useParams()
     const own = useOwn()
+    const [ready, setReady] = useState(false)
     const meetsRef = store.collection('meets')
     const query = meetsRef.where('host_id', '==', params.user_id)
     const [meets] = useCollectionData(query, {idField: 'id'})    
@@ -41,7 +47,10 @@ const Meets = () => {
     const [collaborated, setCollaborated] = useState<any[]>([])
 
     useEffect(() => {
-        console.log(meets)
+        if(meets) {
+            setReady(true)
+            console.log(meets)
+        }
         /* const getOwn = async () => {
             const { docs } = await store.collection('meets')
             .where('host_id', "==", params.user_id).get()
@@ -52,21 +61,20 @@ const Meets = () => {
 
         /* store.collection('meets').where('host_id', "==", params.user_id).get()
         .then(res => {
-            setOwn(res.docs.map(item => item.data()))
+            setOwn(res.docs.map(item => (item.data()))
         })
-        .catch(e => console.log(e)) */
-    }, [])
+        .catch(e s=> console.log(e)) */
+    }, [meets])
 
-    return (
-        <Fragment>
+    return meets ? (
             <Center>
                 <Card classes="h-auto w-96 mt-4">
                     <Title title={`Meets - ${auth.currentUser?.email}`}/>
                     <h2>Mis Diagramas</h2>
                     {
-                        meets && meets.map(meet => {
-                            <p key={meet.id}>{meet.id}</p>
-                        })
+                        meets.map(meet => 
+                            <Meet data={meet}/>
+                        )
                     }
                     <hr />
                     <h2>Diagramas en los que participas</h2>
@@ -83,13 +91,7 @@ const Meets = () => {
                     <NewMeet />
                 </Card>
             </Center> 
-            {
-                meets && meets.map(meet => {
-                    <p key={meet.id}>{meet.id}</p>
-                })
-            }
-        </Fragment>
-    )
+    ) : <Loading />
 }
 
 export default Meets
