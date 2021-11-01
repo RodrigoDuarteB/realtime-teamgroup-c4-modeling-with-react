@@ -18,38 +18,6 @@ const Meets = () => {
     const [collaborated] = useCollectionData(store.collection('meets').
     where('host_id', '==', params.user_id), {idField: 'id'})
 
-    useEffect(() => {
-        if(meets) {
-            console.log(meets)
-        }
-        /* const getOwn = async () => {
-            const { docs } = await store.collection('meets')
-            .where('host_id', "==", params.user_id).get()
-            setOwn(docs.map(item => ({ id: item.id, ...item.data() })))
-            console.log(own)
-        }
-        getOwn() */
-
-        /* store.collection('meets').where('host_id', "==", params.user_id).get()
-        .then(res => {
-            setOwn(res.docs.map(item => (item.data()))
-        })
-        .catch(e s=> console.log(e)) */
-        /* store.collection('meets').doc("5Lj3NHPdBJFnMxpfzl5J")
-        .get()
-        .then(doc => {
-            if(doc.exists){
-                console.log("Document data:", doc.data())
-            }else {
-                // doc.data() will be undefined in this case
-                console.log("No such document!");
-            }
-        })
-        .catch((error) => {
-            console.log("Error getting document:", error);
-        }); */
-    }, [meets])
-
     return meets ? (
             <Center>
                 <Card classes="h-auto w-96 mt-4">
@@ -57,7 +25,7 @@ const Meets = () => {
                     <h2 className="text-center font-semibold text-lg">Mis Diagramas</h2>
                     {
                         meets && meets.map(meet => 
-                            <Meet data={meet}/>
+                            <Meet data={meet} key={meet.id} />
                         ) 
                     }
                     <hr className="mt-4"/>

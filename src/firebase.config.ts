@@ -22,3 +22,7 @@ export { store }
 
 const storage = firebase.storage()
 export { storage }
+
+const fieldValue = firebase.firestore.FieldValue
+export { fieldValue }
+

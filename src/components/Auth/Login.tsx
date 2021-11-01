@@ -17,7 +17,8 @@ const Login = () => {
     const query = useQuery()
 
     const redirect = () => {
-        const qs = query.get('redirect_to') || '/'
+        const redirect = query.get('redirect_to')
+        const qs = redirect ? redirect : '/'
         history.push(qs)
     }
 
@@ -26,13 +27,6 @@ const Login = () => {
         auth.createUserWithEmailAndPassword(email, 
             password)
         .then(r => {
-            store.collection('log').add({
-                user_id: r.user!.uid,
-                created_at: new Date(),
-                type: 'REGISTER'
-            })
-            .then(r => {})
-            .catch(e => console.log(e))
             redirect()
         })
         .catch(reason => {
@@ -51,13 +45,6 @@ const Login = () => {
     const login = () => {
         auth.signInWithEmailAndPassword(email, password)
         .then(r => { 
-            store.collection('log').add({
-                user_id: r.user!.uid,
-                created_at: new Date(),
-                type: 'LOGIN'
-            })
-            .then(r => console.log(r))
-            .catch(e => console.log(e))
             redirect()
         })
         .catch(e => {
@@ -73,13 +60,6 @@ const Login = () => {
     const loginWithGoogle = () => {
         auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
         .then(r => { 
-            store.collection('log').add({
-                user_id: r.user!.uid,
-                created_at: new Date(),
-                type: 'LOGIN'
-            })
-            .then(r => console.log('log registered'))
-            .catch(e => console.log(e))
             redirect()
         })
     }

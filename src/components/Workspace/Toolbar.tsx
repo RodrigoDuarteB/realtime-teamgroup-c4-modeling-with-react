@@ -22,7 +22,7 @@ import { useState } from 'react'
 
 const Toolbar = () => {
     const params: any = useParams()
-    const [active, setActive] = useState([true, false, false, false, false, false])
+    const [active, setActive] = useState<boolean[]>([true, false, false, false, false, false])
 
     const changeColor = (e: any) => {
         ToolState.setStrokeColor(e.target.value)

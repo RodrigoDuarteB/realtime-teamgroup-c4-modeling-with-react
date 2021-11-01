@@ -8,6 +8,8 @@ import Meets from './components/Meets/Meets';
 import Root from './components/Auth/Root';
 import AuthProvider from './components/Application/AuthProvider';
 import Title from './components/Application/Title';
+import Another from './components/Workspace/Another';
+import Diagram from './components/Workspace/Diagram';
 
 function App() {
 
@@ -29,6 +31,7 @@ function App() {
             <GuardRoute path='/meets/me/:user_id' component={Meets} type="auth"/>
             {/* reunión */}
             <GuardRoute path='/meets/:id' component={Workspace} type="auth"/>
+            <GuardRoute path='/another/:id' component={Diagram} type="auth"/>
           </Switch>
         </Root>
       </AuthProvider>

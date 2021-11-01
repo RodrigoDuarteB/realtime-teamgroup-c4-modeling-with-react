@@ -12,6 +12,9 @@ module.exports = {
         'secondary-dark': '#c2c2c2',
       }
     },
+    maxWidth: {
+      '4/5': '80%'
+    }
   },
   variants: {
     extend: {},

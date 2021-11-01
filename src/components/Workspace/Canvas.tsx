@@ -7,6 +7,7 @@ import toolState from '../../store/ToolState'
 import { Figure } from '../../Tools/Figure'
 import Person from '../../Tools/Person'
 import Loading from '../Style/Loading'
+import './styles.css'
 
 const Canvas = observer(() => {
     const canvasRef = useRef<any>()
@@ -14,14 +15,12 @@ const Canvas = observer(() => {
     const params: any = useParams()
 
     const [figures, setFigures] = useState<Figure[]>([])
-    const [width, setWidth] = useState()
-    const [height, setHeight] = useState()
+    const [canvasBounds, setCanvasBounds] = useState({width: 0, height: 0})
     const [meet, setMeet] = useState<any>()
     const [users, setUsers] = useState<any[]>()
 
     const setCanvas = () => {
-        setWidth(workspaceRef.current.offsetWidth)
-        setHeight(workspaceRef.current.offsetHeight)
+        setCanvasBounds({width: workspaceRef.current.offsetWidth, height: workspaceRef.current.offsetHeight})
         canvasState.setCanvas(canvasRef.current)
         canvasState.setTabIndex()
         canvasState.setFigures(figures)
@@ -80,11 +79,18 @@ const Canvas = observer(() => {
     }
 
     return meet ? (
-            <div className="h-screen w-full" ref={workspaceRef}>
-                <p>Titulo: { meet ? meet.title : '' }</p>   
-                <canvas className="border bg-secondary" height={height} width={width} ref={canvasRef}   onMouseDown={mouseDownHandler} 
-                onMouseUp={mouseUpHandler} 
-                />
+            <div className="w-4/5 overflow-auto" ref={workspaceRef}>
+                {/* <p>Titulo: { meet ? meet.title : '' }</p> */}   
+                <canvas 
+                    className="border bg-secondary" 
+                    height={canvasBounds.height} 
+                    width={canvasBounds.width} 
+                    ref={canvasRef} 
+                    onMouseDown={mouseDownHandler} 
+                    onMouseUp={mouseUpHandler} 
+                >
+                    <div className="bg-gray-600">a</div>
+                </canvas>
             </div>
     ) : <Loading/>
 })
