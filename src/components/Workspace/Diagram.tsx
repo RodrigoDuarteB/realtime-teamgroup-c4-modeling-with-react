@@ -48,6 +48,8 @@ const Diagram = () => {
           text: modified.text,
           color: modified.color,
           loc: modified.loc,
+          width: modified.width,
+          height: modified.height,
           last_modify_by: auth.currentUser ? auth.currentUser.uid : 'unknown'
         }).then(_ => console.log('node modified'))
       }
@@ -64,7 +66,7 @@ const Diagram = () => {
     }
 
     if(e.modifiedLinkData){
-      const linkModified = e.modifiedLinkData[0]
+      const linkModified: go.ObjectData = e.modifiedLinkData[0]
       if(insertedLink){
         /* getDiagramLinks(params.id).add({
           from: linkModified.from,
@@ -103,6 +105,8 @@ const Diagram = () => {
             text: node.text,
             color: node.color,
             loc: node.loc,
+            width: node.width,
+            height: node.height,
             created_by: node.created_by,
             last_modify_by: node.last_modify_by,
           }

@@ -17,24 +17,27 @@ export function initDiagram() {
         })
     });
     
-    // define a simple Node template
+
     diagram.nodeTemplate = $(go.Node, 'Auto', {
-        resizable: true,
+        resizable: true
         /* rotatable: true */
-    }, /*the Shape will go around the TextBlock */new go.Binding('location'
-    , 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
-    $(go.Shape, 'RoundedRectangle',{ 
+    }, new go.Binding('location'
+    , 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),$(
+        go.Shape, 'RoundedRectangle',{ 
         name: 'SHAPE', 
         fill: 'white', 
         strokeWidth: 0, 
         fromLinkable: true, 
         toLinkable: true, 
-        portId: "" 
-    },/* Shape.fill is bound to Node.data.color */new go.Binding('fill', 
-    'color')),$(go.TextBlock,{ 
+        portId: ""
+    },new go.Binding('width').makeTwoWay(),
+    new go.Binding('height').makeTwoWay(),
+     new go.Binding('fill','color')),$(
+         go.TextBlock,{ 
         margin: 8, 
         editable: true 
-    }, /* some room around the text */ new go.Binding('text').makeTwoWay()));
+    }, /* some room around the text */ new go.Binding('text')
+    .makeTwoWay()));
 
 
     //determines the link shape
