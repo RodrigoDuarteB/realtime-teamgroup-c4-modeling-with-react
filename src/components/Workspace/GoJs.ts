@@ -18,7 +18,9 @@ export function initDiagram() {
     });
     
 
-    diagram.nodeTemplate = $(go.Node, 'Auto', {
+    diagram.nodeTemplate = $(
+        go.Node, 
+        'Auto', {
         resizable: true
         /* rotatable: true */
     }, new go.Binding('location'
@@ -38,6 +40,51 @@ export function initDiagram() {
         editable: true 
     }, /* some room around the text */ new go.Binding('text')
     .makeTwoWay()));
+
+
+    const nodeStyle = () => [
+        new go.Binding('location', 'loc', go.Point.parse)
+        .makeTwoWay(go.Point.stringify),
+        {
+            locationSpot: go.Spot.Center
+        }
+    ]
+
+    const textStyle = () => ({
+        font: 'bold 14px Lato, Helvetica, Arial, sans-serif',
+        stroke: '#000000'
+    });
+
+    //add other types of nodes
+    diagram.nodeTemplateMap.add(
+        'Conditional',
+        $(
+            go.Node,
+            'Table',
+            nodeStyle(),
+            $(
+                go.Panel,
+                'Auto',
+                $(
+                    go.Shape,
+                    'Diamond',
+                    { fill: '#91d5ff', stroke: '#000000', strokeWidth: 1 },
+                    new go.Binding('figure', 'figure')
+                ),
+                $(
+                    go.TextBlock,
+                    textStyle(),
+                    {
+                        margin: 8,
+                        maxSize: new go.Size(200, NaN),
+                        wrap: go.TextBlock.WrapFit,
+                        editable: true
+                    },
+                    new go.Binding('text').makeTwoWay()
+                )
+            )
+        )
+    );
 
 
     //determines the link shape

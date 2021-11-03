@@ -12,7 +12,8 @@ const Palette = () => {
                 { key: "LC", color: "lightcoral" },
                 { key: "S", color: "salmon" },
                 { key: "DS", color: "darksalmon" },
-                { key: "LS", color: "lightsalmon" }
+                { key: "LS", color: "lightsalmon" },
+                { category: 'Conditional', text: 'Cond' }
             ]}
             divClassName="h-screen w-24"
         />
