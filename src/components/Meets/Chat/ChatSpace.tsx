@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { useParams } from 'react-router'
 import { auth, fieldValue } from '../../../firebase.config'
 import { getMeetChat } from '../../../services/MeetService'
 import ChatMessage from './ChatMessage'
@@ -14,16 +13,15 @@ export interface ChatMessageI {
     created_at: firebase.firestore.Timestamp
 }
 
-const ChatSpace = () => {
+const ChatSpace = ({ id }: {id: string}) => {
     
-    const params: {id: string} = useParams()
     const [message, setMessage] = useState<string>('')
-    const [chat] = useCollectionData<ChatMessageI>(getMeetChat(params.id)
+    const [chat] = useCollectionData<ChatMessageI>(getMeetChat(id)
     .orderBy('created_at'), {idField: 'id'})
 
     const sendMessage = (e: any) => {
         e.preventDefault()
-        getMeetChat(params.id).add({
+        getMeetChat(id).add({
             user_id: auth.currentUser?.uid,
             username: auth.currentUser?.displayName ? auth.currentUser?.displayName : auth.currentUser?.email,
             message,
@@ -50,9 +48,11 @@ const ChatSpace = () => {
             
             {/* INPUT BUTTON */}
             <form onSubmit={sendMessage} className="flex justify-between bg-gray-400 p-4">
-                <input type="text" onChange={(e) => setMessage(e.target.value)} value={message}/>
+                <input type="text" value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                />
                 <button type="submit">Send</button>
-            </form>
+            </form>      
         </div>
     )
 }

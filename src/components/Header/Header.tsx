@@ -17,9 +17,8 @@ const Header = () => {
 
     return (
         <nav className="w-full h-14 bg-primary-dark flex justify-between items-center px-4 rounded-b-lg shadow-lg">
-            <Link to="/" className="header-text">C4Meet</Link>
+            <Link to="/" className="header-text">C4 Model</Link>
             <div className="space-x-2">
-                <Link to="/another" className="header-text">Another Workspace</Link>
                 {
                     user ? (
                         <Fragment>

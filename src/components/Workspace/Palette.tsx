@@ -8,14 +8,11 @@ const Palette = () => {
         <ReactPalette 
             initPalette={initPalette}
             nodeDataArray={[
-                { key: "IR", color: "indianred" },
-                { key: "LC", color: "lightcoral" },
-                { key: "S", color: "salmon" },
-                { key: "DS", color: "darksalmon" },
-                { key: "LS", color: "lightsalmon" },
-                { category: 'Conditional', text: 'Cond' }
+                { category: 'Start', text: 'User' },
+				{ text: 'Sistema' },
+				{ category: 'Comment', text: 'Comment' }
             ]}
-            divClassName="h-screen w-24"
+            divClassName="h-32 w-full bg-gray-300"
         />
     )
 }

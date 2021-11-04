@@ -1,27 +1,26 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { useParams } from 'react-router'
 import { auth } from '../../../firebase.config'
 import { getMeetUsersConnected } from '../../../services/MeetService'
 import { UserSession } from '../../models/UserSession'
 import UserBadge from './UserBadge'
 
-const UsersBar = () => {
+const UsersBar = ({ id }: {id: string}) => {
     
-    const params: {id: string} = useParams()
-    const [users] = useCollectionData<UserSession>(getMeetUsersConnected(params.id)
+    const [users] = useCollectionData<UserSession>(getMeetUsersConnected(id)
     .orderBy('status', 'desc'), {idField: 'id'})
+    const userId = auth.currentUser?.uid
 
     useEffect(() => {
-        getMeetUsersConnected(params.id).where('user_id', '==', auth.currentUser?.uid).get()
+        getMeetUsersConnected(id).where('user_id', '==', userId).get()
         .then(res => {
             if(!res.empty){
-                getMeetUsersConnected(params.id).doc(res.docs[0].id)
+                getMeetUsersConnected(id).doc(res.docs[0].id)
                 .update({
                     status: true
                 })
             }else{
-                getMeetUsersConnected(params.id).add({
+                getMeetUsersConnected(id).add({
                     user_id: auth.currentUser?.uid,
                     username: auth.currentUser?.displayName ? auth.currentUser?.displayName : auth.currentUser?.email,
                     status: true
@@ -30,10 +29,10 @@ const UsersBar = () => {
         })
 
         return () => {
-            getMeetUsersConnected(params.id).where('user_id', '==', auth.currentUser?.uid).get()
+            getMeetUsersConnected(id).where('user_id', '==', userId).get()
             .then(res => {
                 if(!res.empty){
-                    getMeetUsersConnected(params.id).doc(res.docs[0].id)
+                    getMeetUsersConnected(id).doc(res.docs[0].id)
                     .update({
                         status: false
                     })
