@@ -1,4 +1,4 @@
-import { store } from "../firebase.config"
+import { store } from "../firebase"
 
 export const meetsReference = () => store.collection('meets')
 

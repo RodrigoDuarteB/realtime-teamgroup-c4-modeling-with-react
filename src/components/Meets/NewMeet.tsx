@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react"
 import { useHistory, useParams } from "react-router-dom"
-import { store } from '../../firebase.config'
+import { store } from '../../firebase'
 import Center from '../Style/Center'
 
 const NewMeet = () => {

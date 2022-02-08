@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { store } from '../../firebase.config'
+import { store } from '../../firebase'
 import canvasState from '../../store/CanvasState'
 import toolState from '../../store/ToolState'
 import { Figure } from '../../Tools/Figure'

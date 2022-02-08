@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { auth, fieldValue } from '../../../firebase.config'
+import { auth, fieldValue } from '../../../firebase'
 import { getMeetChat } from '../../../services/MeetService'
 import ChatMessage from './ChatMessage'
 import firebase from 'firebase'

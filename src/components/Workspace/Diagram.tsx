@@ -5,7 +5,7 @@ import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { getDiagramLinks, getDiagramNodes, getMeet } from '../../services/MeetService';
 import Loading from '../Style/Loading';
 import { initDiagram } from './GoJs';
-import { auth } from '../../firebase.config';
+import { auth } from '../../firebase';
 import Palette from './Palette';
 
 const Diagram = ({ id }: {id: string}) => {

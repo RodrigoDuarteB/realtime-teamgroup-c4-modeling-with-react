@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx"
-import { store } from "../firebase.config"
+import { store } from "../firebase"
 import { Figure } from "../Tools/Figure"
 
 class CanvasState {

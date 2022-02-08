@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { auth } from '../../firebase.config'
+import { auth } from '../../firebase'
 
 const Auth = ({ children }: any) => {
     const [user] = useAuthState(auth)

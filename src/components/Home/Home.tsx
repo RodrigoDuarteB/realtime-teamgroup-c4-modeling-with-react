@@ -3,7 +3,7 @@ import Title from '../Application/Title'
 import Auth from '../Auth/Auth'
 import Card from '../Style/Card'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { auth } from '../../firebase.config'
+import { auth } from '../../firebase'
 import Center from '../Style/Center'
 import { Link } from 'react-router-dom'
 

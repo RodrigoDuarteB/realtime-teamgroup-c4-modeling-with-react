@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { auth, store } from '../../firebase.config'
+import { auth, store } from '../../firebase'
 import Card from '../Style/Card'
 import firebase from 'firebase/app'
 import Title from '../Application/Title'

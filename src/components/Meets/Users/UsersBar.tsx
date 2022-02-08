@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { auth } from '../../../firebase.config'
+import { auth } from '../../../firebase'
 import { getMeetUsersConnected } from '../../../services/MeetService'
 import { UserSession } from '../../models/UserSession'
 import UserBadge from './UserBadge'

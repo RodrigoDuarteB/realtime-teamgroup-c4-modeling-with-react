@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react'
-import { auth } from '../../firebase.config'
+import { auth } from '../../firebase'
 
 const AuthProvider = ({ children }: any) => {
     const [ready, setReady] = useState(false)
